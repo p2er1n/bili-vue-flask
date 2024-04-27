@@ -1,47 +1,32 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+<el-container>
+	<el-header>
+		<Bar @selected="updateSelectedId"/>
+	</el-header>
+	<el-main>
+		<Content style="margin: 1rem;" v-bind:selectedId="selectedId" v-if="selectedId != -1"/>
+		<el-empty v-else description="请选择一个分类"/>
+	</el-main>
+</el-container>
 </template>
 
+<script setup>
+import { ref } from 'vue'
+import Bar from './components/Bar.vue'
+import Content from './components/Content.vue'
+
+let selectedId = ref(-1)
+function updateSelectedId(id) {
+	 selectedId.value = id
+}
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+</style>
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style>
+body {
+     align-items: start;
 }
 </style>
