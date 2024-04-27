@@ -120,13 +120,17 @@ def crawl(category):
     print(f"cached {category}")
     return res
 
+inited = False 
 def init():
+   global inited
+   if inited:
+      return
    print("initing...")
    l =  ['全站', '国创相关', '动画', '音乐', '舞蹈', '游戏', '知识', '科技', '运动', '汽车', '生活', '美食', '动物圈', '鬼畜', '时尚', '娱乐', '影视', '原创', '新人']
    for c in l:
       print(f"fetching {c}")
       crawl(c)
-init()
+   inited = True
       
 if __name__ == "__main__":
     # test
