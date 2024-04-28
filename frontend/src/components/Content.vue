@@ -36,7 +36,12 @@
 			       </el-col>
 			       <el-col :span="1" style="margin-left: 1rem;"><el-text class="mx-1">{{ data[selectedCategory][i-1] }}</el-text></el-col>
 		       </el-row>
-		</el-main>      			     
+		</el-main>
+		<el-aside>
+			<el-row v-for="pie in pies">
+				<el-image :fit="fit" :src="pie"></el-image>
+			</el-row>
+		</el-aside>
 	</el-container>
 	<el-empty v-else description="正在加载..."/>
 </div>
@@ -57,23 +62,8 @@ const data = ref({
       'share': [],
       'author': []
 })
-
-const selectedCategory = ref("view")
-function selectCategory(e) {
-	 const name = e.currentTarget.previousElementSibling.textContent;
-	 const table = {
-	       '总播放量': 'view',
-	       '总弹幕数': 'danmaku',
-	       '总收藏数': 'favorite',
-	       '总投币数': 'coin',
-	       '总分享数': 'share',	       
-	 }
-	 selectedCategory.value = table[name]
-}
-
-async function fetchData() {
-      const table = {
-      	    1:"qz",
+const table = {
+ 	    1:"qz",
             2:"gcxg",
        	    3:"dh",
        	    4:"yy",
@@ -91,8 +81,53 @@ async function fetchData() {
        	    16:"yl",
        	    17:"ys",
        	    18:"yc",
-       	    19:"xr"
-      }
+       	    19:"xr",
+ 	    "qz":1,
+            "gcxg":2,
+       	    "dh":3,
+       	    "yy":4,
+       	    "wd":5,
+       	    "yx":6,
+       	    "zs":7,
+       	    "kj":8,
+       	    "yd":9,
+       	    "qc":10,
+       	    "sh":11,
+       	    "ms":12,
+       	    "dwq":13,
+       	    "gc":14,
+       	    "ss":15,
+       	    "yl":16,
+       	    "ys":17,
+       	    "yc":18,
+       	    "xr":19
+}
+
+const selectedCategory = ref("view")
+const pies = computed(() => {
+    let res = []
+    for (let fm = 1; fm <= 100; fm += 10) {
+        const to = fm + 9
+        const id = props.selectedId
+        const category = selectedCategory.value
+        res.push("/api/" + table[id] + "?type=pie&sub=" + category + "&from=" + fm + "&to=" + to)
+    }
+    return res
+})
+
+function selectCategory(e) {
+	 const name = e.currentTarget.previousElementSibling.textContent;
+	 const table = {
+	       '总播放量': 'view',
+	       '总弹幕数': 'danmaku',
+	       '总收藏数': 'favorite',
+	       '总投币数': 'coin',
+	       '总分享数': 'share',	       
+	 }
+	 selectedCategory.value = table[name]
+}
+
+async function fetchData() {
       const selectedId = props.selectedId
       const res = await	fetch("/api/" + table[selectedId]);
       if(selectedId == props.selectedId)
@@ -133,6 +168,15 @@ watch(selectedId, (n, o) => {
 }
 .el-button {
 	font-size: 1.2rem;
+}
+
+.el-aside {
+ 	border: solid;
+	margin-left: 1rem;
+	justify-content: space-around;
+	display: flex;
+	flex-direction: column;
+	
 }
 
 </style>
