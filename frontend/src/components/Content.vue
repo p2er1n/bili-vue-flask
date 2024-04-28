@@ -34,7 +34,7 @@
 			       <el-col>
 			           <el-progress :show-text=false :stroke-width="26" :percentage="data[selectedCategory][i-1]/data[selectedCategory].reduce((a, c) => a + c, 0)*100" />
 			       </el-col>
-			       <el-col :span="1" style="margin-left: 1rem;"><el-text class="mx-1">{{ data[selectedCategory][i-1] }}</el-text></el-col>
+			       <el-col class="detailNum" :span="1" style="margin-left: 1rem;"><el-text class="mx-1">{{ data[selectedCategory][i-1] }}</el-text></el-col>
 		       </el-row>
 		</el-main>
 		<el-aside>
@@ -176,7 +176,10 @@ watch(selectedId, (n, o) => {
 	justify-content: space-around;
 	display: flex;
 	flex-direction: column;
-	
+}
+
+.detailNum {
+	white-space: nowrap;
 }
 
 </style>
