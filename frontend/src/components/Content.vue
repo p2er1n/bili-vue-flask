@@ -24,7 +24,7 @@
 				       <el-button @click="selectCategory" :type="selectedCategory === 'share' ? 'primary' : 'default'" text>{{data['share'].reduce((a, c) => a + c, 0)}}</el-button>
 			       </el-col>
 		       </el-row>
-		       <el-row v-for="i in data[selectedCategory].length">
+		       <el-row v-for="i in data[selectedCategory].length" :key="i">
        		      	       <el-col :span="3" >
 			           <el-text class="mx-1" type="primary">{{ data['author'][i-1]['name'] + '：' }}</el-text>
 			       </el-col>
@@ -38,8 +38,8 @@
 		       </el-row>
 		</el-main>
 		<el-aside>
-			<el-row v-for="pie in pies">
-				<el-image :fit="fit" :src="pie"></el-image>
+			<el-row v-for="pie in pies" :key="pie.id">
+				<el-image :fit="fit" :src="pie.url" :loading="'lazy'" :key="pie.id"></el-image>
 			</el-row>
 		</el-aside>
 	</el-container>
@@ -106,11 +106,13 @@ const table = {
 const selectedCategory = ref("view")
 const pies = computed(() => {
     let res = []
+    let idx = 1
     for (let fm = 1; fm <= 100; fm += 10) {
         const to = fm + 9
         const id = props.selectedId
         const category = selectedCategory.value
-        res.push("/api/" + table[id] + "?type=pie&sub=" + category + "&from=" + fm + "&to=" + to)
+        res.push({id:idx, url: "/api/" + table[id] + "?type=pie&sub=" + category + "&from=" + fm + "&to=" + to})
+	idx++
     }
     return res
 })
@@ -151,7 +153,7 @@ watch(selectedId, (n, o) => {
 	     fetchData()
 })
 
-</SCRIPT>
+</script>
 
 <style scoped>
 .el-row {

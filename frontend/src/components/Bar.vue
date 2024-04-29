@@ -2,7 +2,7 @@
 <div>
 <el-container>
      <el-main>
-	<el-button @click="select" text :type="btnId === btn.id ? 'primary' : 'default'" class="btn" v-for="btn in btns" :btn-id="btn.id">{{ btn.text }}</el-button>
+	<el-button @click="select" text :type="btnId === btn.id ? 'primary' : 'default'" class="btn" v-for="btn in btns" :btn-id="btn.id" :key="btn.id">{{ btn.text }}</el-button>
      </el-main>
 </el-container>
 </div>
